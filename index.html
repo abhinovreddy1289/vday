@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Will you be my Valentine Chikku 💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh; /* ✅ mobile friendly */
+  background:
+    linear-gradient(rgba(255,182,193,0.3), rgba(255,182,193,0.55)),
+    url("https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A0201.jpg");
+  background-size: cover;
+  background-position: center;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.88);
+  color: #333;
+  padding: 25px;
+  border-radius: 25px;
+  max-width: 480px;
+  margin: 80px auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Buttons */
+button {
+  font-size: 22px;
+  margin: 10px;
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+button:hover { transform: scale(1.12); }
+
+#yes { background: #ff6f91; color: white; }
+#no  { background: #ffd3e0; color: #900; position: absolute; }
+
+/* Floating hearts */
+@keyframes floatHearts {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-520px); opacity: 0; }
+}
+
+.heart {
+  position: absolute;
+  font-size: 28px;
+  animation: floatHearts 4s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Emoji burst */
+@keyframes burst {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.7); opacity: 0; }
+}
+
+.particle {
+  position: fixed;
+  font-size: 26px;
+  pointer-events: none;
+  animation: burst 700ms ease-out forwards;
+}
+</style>
+</head>
+
+<body onclick="handleTap(event)" ontouchstart="handleTap(event)">
+
+<!-- MAIN SCREEN -->
+<div id="mainScreen">
+  <div class="card">
+    <h1>💖 Be My Valentine! 💖</h1>
+    <p>(Try clicking NO 😜)</p>
+
+    <button id="yes" onclick="yesClicked()">YES 💕</button>
+
+    <!-- ✅ Mobile support: ontouchstart -->
+    <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()">NO 😝</button>
+  </div>
+</div>
+
+<!-- 🎵 Background Music (keep ONE consistent link) -->
+<audio id="bgMusic" loop preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/abhinovreddy1289/vday/main/dialouge.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* --- Save the main page so Back to YES works without reload --- */
+let mainPageHTML = "";
+
+/* ---------- MUSIC ---------- */
+let musicStarted = false;
+function startMusic() {
+  if (musicStarted) return;
+  musicStarted = true;
+  document.getElementById("bgMusic").play().catch(() => {});
+}
+
+/* ---------- NO BUTTON ---------- */
+function moveNo(){
+  const no = document.getElementById("no");
+  const maxX = window.innerWidth - 130;
+  const maxY = window.innerHeight - 130;
+  no.style.left = Math.max(0, Math.random() * maxX) + "px";
+  no.style.top  = Math.max(0, Math.random() * maxY) + "px";
+}
+
+/* ---------- HEARTS ---------- */
+function createHearts(count, x = null, y = null) {
+  for (let i = 0; i < count; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = ["💗","💖","💕","💘","❤️"][Math.floor(Math.random()*5)];
+    h.style.left = (x ?? Math.random()*window.innerWidth) + "px";
+    h.style.top  = (y ?? window.innerHeight) + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 4500);
+  }
+}
+
+/* ---------- EMOJI BURST ---------- */
+function emojiBurst(x, y) {
+  const emojis = ["💖","💕","✨","😍","😘","💘","🥰"];
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.left = x + "px";
+    p.style.top  = y + "px";
+    p.style.setProperty("--dx", (Math.random()*200-100)+"px");
+    p.style.setProperty("--dy", (Math.random()*200-120)+"px");
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+/* ---------- TAP HANDLER (✅ supports touch) ---------- */
+function handleTap(e) {
+  startMusic();
+
+  let x, y;
+  if (e.touches && e.touches.length) {
+    x = e.touches[0].clientX;
+    y = e.touches[0].clientY;
+  } else {
+    x = e.clientX || window.innerWidth/2;
+    y = e.clientY || window.innerHeight/2;
+  }
+
+  emojiBurst(x, y);
+}
+
+/* ---------- YES CLICK ---------- */
+function yesClicked(){
+  createHearts(30);
+
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      background:
+        linear-gradient(rgba(255,182,193,0.7), rgba(255,182,193,0.7)),
+        url('https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A0201.jpg');
+      background-size:cover;
+      background-position:center;
+      color:white;
+      text-align:center;
+      font-family:'Comic Sans MS', cursive, sans-serif;
+      padding:20px;
+    " onclick="handleTap(event)" ontouchstart="handleTap(event)">
+      
+      <h1 id="typing" style="font-size:42px;"></h1>
+
+      <div id="finalMsg" style="display:none;">
+        <h1 style="font-size:48px;">💖 You chose wisely! 💖</h1>
+        <p style="font-size:26px;max-width:700px;line-height:1.4;">
+          You just signed up for lifetime of happiness 🥰<br>
+          No take-backs.<br>
+          No refunds.<br>
+          No escape 😜<br><br>
+          Happy Valentine’s Day 💕
+        </p>
+
+        <button onclick="replay()" style="
+          font-size:20px;
+          padding:12px 22px;
+          border-radius:28px;
+          border:none;
+          cursor:pointer;
+          font-weight:bold;
+          background:#ff6f91;
+          color:white;
+        ">
+          🔁 Back to YES
+        </button>
+
+        <p style="margin-top:12px;font-size:16px;">(Tap anywhere for more 💖)</p>
+      </div>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto" playsinline>
+      <source src="https://raw.githubusercontent.com/abhinovreddy1289/vday/main/dialouge.mp3" type="audio/mpeg">
+    </audio>
+  `;
+
+  document.getElementById("bgMusic").play().catch(() => {});
+  startTyping();
+}
+
+/* ---------- TYPING EFFECT ---------- */
+function startTyping() {
+  const text = "Loading relationship… 99%";
+  const el = document.getElementById("typing");
+  let i = 0;
+
+  const interval = setInterval(() => {
+    el.textContent += text[i++];
+    if (i === text.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        el.style.display = "none";
+        document.getElementById("finalMsg").style.display = "block";
+        createHearts(40);
+      }, 800);
+    }
+  }, 90);
+}
+
+/* ---------- BACK TO YES (no reload) ---------- */
+function replay() {
+  document.body.innerHTML = mainPageHTML;
+  musicStarted = false;
+
+  // ✅ place NO button somewhere safe after restore
+  setTimeout(moveNo, 50);
+}
+
+/* --- Capture the initial HTML once after load --- */
+window.addEventListener("load", () => {
+  mainPageHTML = document.body.innerHTML;
+
+  // Optional: start with NO slightly moved so it doesn't overlap the card
+  setTimeout(moveNo, 50);
+});
+</script>
+
+</body>
+</html>
