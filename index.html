@@ -24,45 +24,60 @@ body {
   justify-content: center;
 }
 
-/* Card */
+/* 💎 Translucent (glass) card */
 .card {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.72);   /* ✅ translucent */
+  backdrop-filter: blur(6px);           /* ✅ glass effect */
+  -webkit-backdrop-filter: blur(6px);   /* Safari */
+
   color: #333;
-  padding: 26px;
-  border-radius: 25px;
-  max-width: 480px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 32px;                        /* more breathing room */
+  border-radius: 26px;
+  max-width: 520px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+}
+
+/* Headings & text sizes */
+.card h1 {
+  font-size: 34px;   /* ⬆ bigger question */
+  margin-bottom: 12px;
+}
+
+.card p {
+  font-size: 20px;   /* ⬆ bigger bait text */
+  margin-bottom: 20px;
 }
 
 /* Buttons */
 button {
-  font-size: 22px;
-  margin: 10px;
-  padding: 14px 28px;
-  border-radius: 30px;
+  font-size: 24px;     /* ⬆ bigger buttons */
+  margin: 12px;
+  padding: 16px 34px;
+  border-radius: 32px;
   border: none;
   cursor: pointer;
   font-weight: bold;
   transition: transform 0.2s ease;
 }
 
-button:hover { transform: scale(1.1); }
+button:hover { transform: scale(1.12); }
 
 #yes {
   background: #ff6f91;
   color: white;
 }
 
-/* NO button starts NORMAL */
+/* NO button starts normal */
 #no {
   background: #ffd3e0;
   color: #900;
-  position: relative; /* ✅ starts inside card */
+  position: relative;
 }
 
-/* NO button when it starts running */
+/* NO button when it runs */
 #no.runaway {
-  position: absolute;
+  position: fixed;
+  z-index: 9999;
 }
 
 /* Floating hearts */
@@ -73,7 +88,7 @@ button:hover { transform: scale(1.1); }
 
 .heart {
   position: absolute;
-  font-size: 28px;
+  font-size: 30px;   /* ⬆ slightly bigger hearts */
   animation: floatHearts 4s ease-out forwards;
   pointer-events: none;
 }
@@ -86,7 +101,7 @@ button:hover { transform: scale(1.1); }
 
 .particle {
   position: fixed;
-  font-size: 26px;
+  font-size: 28px;   /* ⬆ bigger burst emojis */
   pointer-events: none;
   animation: burst 700ms ease-out forwards;
 }
@@ -102,7 +117,7 @@ button:hover { transform: scale(1.1); }
     <p>(I dare you to click NO 😜)</p>
 
     <button id="yes" onclick="yesClicked()">YES 💕</button>
-    <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()">NO 😝</button>
+    <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()" onclick="moveNo()">NO 😝</button>
   </div>
 </div>
 
@@ -125,15 +140,13 @@ function startMusic() {
 /* ---------- NO BUTTON ---------- */
 function moveNo(){
   const no = document.getElementById("no");
-
-  // switch to runaway mode only when interacted with
   no.classList.add("runaway");
 
-  const maxX = window.innerWidth - 130;
-  const maxY = window.innerHeight - 130;
+  const maxX = window.innerWidth - 150;
+  const maxY = window.innerHeight - 150;
 
-  no.style.left = Math.max(0, Math.random() * maxX) + "px";
-  no.style.top  = Math.max(0, Math.random() * maxY) + "px";
+  no.style.left = Math.random() * maxX + "px";
+  no.style.top  = Math.random() * maxY + "px";
 }
 
 /* ---------- HEARTS ---------- */
@@ -158,8 +171,8 @@ function emojiBurst(x, y) {
     p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
     p.style.left = x + "px";
     p.style.top  = y + "px";
-    p.style.setProperty("--dx", (Math.random()*200-100)+"px");
-    p.style.setProperty("--dy", (Math.random()*200-120)+"px");
+    p.style.setProperty("--dx", (Math.random()*220-110)+"px");
+    p.style.setProperty("--dy", (Math.random()*220-140)+"px");
     document.body.appendChild(p);
     setTimeout(() => p.remove(), 900);
   }
@@ -202,11 +215,11 @@ function yesClicked(){
       padding:20px;
     " onclick="handleTap(event)" ontouchstart="handleTap(event)">
       
-      <h1 id="typing" style="font-size:40px;"></h1>
+      <h1 id="typing" style="font-size:42px;"></h1>
 
       <div id="finalMsg" style="display:none;">
-        <h1 style="font-size:46px;">💖 You chose wisely! 💖</h1>
-        <p style="font-size:24px;max-width:700px;line-height:1.4;">
+        <h1 style="font-size:48px;">💖 You chose wisely! 💖</h1>
+        <p style="font-size:26px;max-width:720px;line-height:1.45;">
           You just signed up for lifetime of happiness 🥰<br>
           No take-backs.<br>
           No refunds.<br>
@@ -215,9 +228,9 @@ function yesClicked(){
         </p>
 
         <button onclick="replay()" style="
-          font-size:20px;
-          padding:12px 22px;
-          border-radius:28px;
+          font-size:22px;
+          padding:14px 26px;
+          border-radius:30px;
           border:none;
           cursor:pointer;
           font-weight:bold;
@@ -226,8 +239,6 @@ function yesClicked(){
         ">
           🔁 Back to YES
         </button>
-
-        <p style="margin-top:12px;font-size:15px;">(Tap anywhere for more 💖)</p>
       </div>
     </div>
 
