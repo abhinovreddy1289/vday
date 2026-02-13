@@ -12,14 +12,13 @@ body {
     linear-gradient(rgba(255,182,193,0.3), rgba(255,182,193,0.55)),
     url("https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A0201.jpg");
   background-size: cover;
-  background-position: top;
+  background-position: center;
 
   font-family: Tahoma, Verdana, Segoe UI, sans-serif;
   text-align: center;
   color: #fff;
   overflow: hidden;
 
-  /* ✅ center content */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,8 +48,22 @@ button {
 
 button:hover { transform: scale(1.1); }
 
-#yes { background: #ff6f91; color: white; }
-#no  { background: #ffd3e0; color: #900; position: absolute; }
+#yes {
+  background: #ff6f91;
+  color: white;
+}
+
+/* NO button starts NORMAL */
+#no {
+  background: #ffd3e0;
+  color: #900;
+  position: relative; /* ✅ starts inside card */
+}
+
+/* NO button when it starts running */
+#no.runaway {
+  position: absolute;
+}
 
 /* Floating hearts */
 @keyframes floatHearts {
@@ -112,8 +125,13 @@ function startMusic() {
 /* ---------- NO BUTTON ---------- */
 function moveNo(){
   const no = document.getElementById("no");
+
+  // switch to runaway mode only when interacted with
+  no.classList.add("runaway");
+
   const maxX = window.innerWidth - 130;
   const maxY = window.innerHeight - 130;
+
   no.style.left = Math.max(0, Math.random() * maxX) + "px";
   no.style.top  = Math.max(0, Math.random() * maxY) + "px";
 }
@@ -245,13 +263,11 @@ function startTyping() {
 function replay() {
   document.body.innerHTML = mainPageHTML;
   musicStarted = false;
-  setTimeout(moveNo, 50);
 }
 
 /* ---------- SAVE INITIAL PAGE ---------- */
 window.addEventListener("load", () => {
   mainPageHTML = document.body.innerHTML;
-  setTimeout(moveNo, 50);
 });
 </script>
 
