@@ -38,17 +38,9 @@ body {
   box-shadow: 0 12px 35px rgba(0,0,0,0.35);
 }
 
-.card h1 {
-  font-size: 34px;
-  margin-bottom: 12px;
-}
+.card h1 { font-size: 34px; margin-bottom: 12px; }
+.card p  { font-size: 20px; margin-bottom: 22px; }
 
-.card p {
-  font-size: 20px;
-  margin-bottom: 22px;
-}
-
-/* Buttons */
 button {
   font-size: 24px;
   margin: 12px;
@@ -59,15 +51,11 @@ button {
   font-weight: bold;
   transition: transform 0.15s ease;
 }
-
 button:hover { transform: scale(1.1); }
 
-#yes {
-  background: #ff6f91;
-  color: white;
-}
+#yes { background: #ff6f91; color: white; }
 
-/* NO button initial */
+/* NO starts normal */
 #no {
   background: #ffd3e0;
   color: #900;
@@ -85,7 +73,6 @@ button:hover { transform: scale(1.1); }
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(-520px); opacity: 0; }
 }
-
 .heart {
   position: absolute;
   font-size: 30px;
@@ -98,7 +85,6 @@ button:hover { transform: scale(1.1); }
   0% { transform: translate(0,0) scale(1); opacity: 1; }
   100% { transform: translate(var(--dx), var(--dy)) scale(0.7); opacity: 0; }
 }
-
 .particle {
   position: fixed;
   font-size: 28px;
@@ -110,7 +96,6 @@ button:hover { transform: scale(1.1); }
 
 <body onclick="handleTap(event)" ontouchstart="handleTap(event)">
 
-<!-- MAIN SCREEN -->
 <div class="card">
   <h1>💖 Will you be my Valentine Chikku! 💖</h1>
   <p>(I dare you to click NO 😜)</p>
@@ -122,14 +107,12 @@ button:hover { transform: scale(1.1); }
     onclick="moveNo()">NO 😝</button>
 </div>
 
-<!-- 🎵 Music -->
 <audio id="bgMusic" loop preload="auto" playsinline>
   <source src="https://raw.githubusercontent.com/abhinovreddy1289/music/main/dialouge.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 let musicStarted = false;
-let mainHTML = "";
 
 /* Music */
 function startMusic(){
@@ -138,28 +121,35 @@ function startMusic(){
   document.getElementById("bgMusic").play().catch(()=>{});
 }
 
-/* 🚀 BULLETPROOF NO MOVE */
+/* ✅ BULLETPROOF NO MOVE (never off-screen on mobile) */
 function moveNo(){
   const no = document.getElementById("no");
   no.classList.add("runaway");
 
-  const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-  const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  // viewport info (best for iOS Safari too)
+  const vv = window.visualViewport;
+  const vw = vv ? vv.width : window.innerWidth;
+  const vh = vv ? vv.height : window.innerHeight;
+  const ox = vv ? vv.offsetLeft : 0;
+  const oy = vv ? vv.offsetTop  : 0;
 
+  // real button size
   const rect = no.getBoundingClientRect();
-  const bw = rect.width || 140;
-  const bh = rect.height || 60;
+  const bw = rect.width  || 160;
+  const bh = rect.height || 70;
 
   const pad = 12;
 
-  const maxX = vw - bw - pad;
-  const maxY = vh - bh - pad;
+  // usable range inside viewport
+  const rangeX = Math.max(0, vw - bw - (pad * 2));
+  const rangeY = Math.max(0, vh - bh - (pad * 2));
 
-  const x = Math.max(pad, Math.random() * maxX);
-  const y = Math.max(pad, Math.random() * maxY);
+  // final position (clamped)
+  const x = ox + pad + (Math.random() * rangeX);
+  const y = oy + pad + (Math.random() * rangeY);
 
-  no.style.left = x + "px";
-  no.style.top  = y + "px";
+  no.style.left = `${x}px`;
+  no.style.top  = `${y}px`;
 }
 
 /* Hearts */
@@ -194,9 +184,15 @@ function emojiBurst(x,y){
 /* Tap handler */
 function handleTap(e){
   startMusic();
-  let x=e.touches?e.touches[0].clientX:e.clientX;
-  let y=e.touches?e.touches[0].clientY:e.clientY;
-  emojiBurst(x||innerWidth/2,y||innerHeight/2);
+  let x, y;
+  if (e.touches && e.touches.length) {
+    x = e.touches[0].clientX;
+    y = e.touches[0].clientY;
+  } else {
+    x = e.clientX || innerWidth/2;
+    y = e.clientY || innerHeight/2;
+  }
+  emojiBurst(x,y);
 }
 
 /* YES click */
@@ -222,9 +218,11 @@ function yesClicked(){
     <h1 id="typing" style="font-size:42px;"></h1>
     <div id="final" style="display:none;">
       <h1 style="font-size:48px;">💖 You chose wisely! 💖</h1>
-      <p style="font-size:26px;max-width:720px;">
-        You just signed up for lifetime happiness 🥰<br>
-        No take-backs. No refunds. No escape 😜<br><br>
+      <p style="font-size:26px;max-width:720px;line-height:1.45;">
+        You just signed up for lifetime of happiness 🥰<br>
+        No take-backs.<br>
+        No refunds.<br>
+        No escape 😜<br><br>
         Happy Valentine’s Day 💕
       </p>
       <button onclick="location.reload()"
@@ -234,10 +232,9 @@ function yesClicked(){
     </div>
   </div>
   <audio id="bgMusic" loop autoplay playsinline>
-    <source src="https://raw.githubusercontent.com/abhinovreddy1289/music/main/dialouge.mp3">
+    <source src="https://raw.githubusercontent.com/abhinovreddy1289/music/main/dialouge.mp3" type="audio/mpeg">
   </audio>
   `;
-
   startTyping();
 }
 
