@@ -10,13 +10,19 @@ body {
   height: 100vh;
   background:
     linear-gradient(rgba(255,182,193,0.3), rgba(255,182,193,0.55)),
-    url("https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A02011.jpg");
+    url("https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A0201.jpg");
   background-size: cover;
   background-position: top;
+
   font-family: Tahoma, Verdana, Segoe UI, sans-serif;
   text-align: center;
   color: #fff;
   overflow: hidden;
+
+  /* ✅ center content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Card */
@@ -26,7 +32,6 @@ body {
   padding: 26px;
   border-radius: 25px;
   max-width: 480px;
-  margin: 80px auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
@@ -80,7 +85,7 @@ button:hover { transform: scale(1.1); }
 <!-- MAIN SCREEN -->
 <div id="mainScreen">
   <div class="card">
-    <h1>💖 Will you be my Valentine Chikku! 💖</h1>
+    <h1>💖 Be My Valentine! 💖</h1>
     <p>(Try clicking NO 😜)</p>
 
     <button id="yes" onclick="yesClicked()">YES 💕</button>
@@ -145,6 +150,7 @@ function emojiBurst(x, y) {
 /* ---------- TAP HANDLER ---------- */
 function handleTap(e) {
   startMusic();
+
   let x, y;
   if (e.touches && e.touches.length) {
     x = e.touches[0].clientX;
@@ -169,7 +175,7 @@ function yesClicked(){
       flex-direction:column;
       background:
         linear-gradient(rgba(255,182,193,0.7), rgba(255,182,193,0.7)),
-        url('https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A02011.jpg');
+        url('https://raw.githubusercontent.com/abhinovreddy1289/vday/main/0W0A0201.jpg');
       background-size:cover;
       background-position:center;
       color:white;
