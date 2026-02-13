@@ -24,33 +24,33 @@ body {
   justify-content: center;
 }
 
-/* 💎 Translucent (glass) card */
+/* 💎 Translucent card */
 .card {
-  background: rgba(255,255,255,0.6);   /* ✅ translucent */
-  backdrop-filter: blur(8px);           /* ✅ glass effect */
-  -webkit-backdrop-filter: blur(8px);   /* Safari */
+  background: rgba(255,255,255,0.5);   /* translucent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   color: #333;
-  padding: 32px;                        /* more breathing room */
+  padding: 32px;
   border-radius: 26px;
   max-width: 520px;
   box-shadow: 0 12px 35px rgba(0,0,0,0.35);
 }
 
-/* Headings & text sizes */
+/* Bigger text */
 .card h1 {
-  font-size: 40px;   /* ⬆ bigger question */
+  font-size: 34px;
   margin-bottom: 12px;
 }
 
 .card p {
-  font-size: 30px;   /* ⬆ bigger bait text */
+  font-size: 20px;
   margin-bottom: 20px;
 }
 
 /* Buttons */
 button {
-  font-size: 24px;     /* ⬆ bigger buttons */
+  font-size: 24px;
   margin: 12px;
   padding: 16px 34px;
   border-radius: 32px;
@@ -67,14 +67,14 @@ button:hover { transform: scale(1.12); }
   color: white;
 }
 
-/* NO button starts normal */
+/* NO starts normal */
 #no {
   background: #ffd3e0;
   color: #900;
   position: relative;
 }
 
-/* NO button when it runs */
+/* ✅ NO when it runs (mobile best) */
 #no.runaway {
   position: fixed;
   z-index: 9999;
@@ -88,7 +88,7 @@ button:hover { transform: scale(1.12); }
 
 .heart {
   position: absolute;
-  font-size: 30px;   /* ⬆ slightly bigger hearts */
+  font-size: 30px;
   animation: floatHearts 4s ease-out forwards;
   pointer-events: none;
 }
@@ -101,7 +101,7 @@ button:hover { transform: scale(1.12); }
 
 .particle {
   position: fixed;
-  font-size: 28px;   /* ⬆ bigger burst emojis */
+  font-size: 28px;
   pointer-events: none;
   animation: burst 700ms ease-out forwards;
 }
@@ -117,6 +117,8 @@ button:hover { transform: scale(1.12); }
     <p>(I dare you to click NO 😜)</p>
 
     <button id="yes" onclick="yesClicked()">YES 💕</button>
+
+    <!-- ✅ Added onclick for mobile reliability -->
     <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()" onclick="moveNo()">NO 😝</button>
   </div>
 </div>
@@ -140,13 +142,15 @@ function startMusic() {
 /* ---------- NO BUTTON ---------- */
 function moveNo(){
   const no = document.getElementById("no");
+
+  // ✅ add runaway class first (prevents jumpiness)
   no.classList.add("runaway");
 
   const maxX = window.innerWidth - 150;
   const maxY = window.innerHeight - 150;
 
-  no.style.left = Math.random() * maxX + "px";
-  no.style.top  = Math.random() * maxY + "px";
+  no.style.left = Math.max(0, Math.random() * maxX) + "px";
+  no.style.top  = Math.max(0, Math.random() * maxY) + "px";
 }
 
 /* ---------- HEARTS ---------- */
@@ -239,6 +243,8 @@ function yesClicked(){
         ">
           🔁 Back to YES
         </button>
+
+        <p style="margin-top:12px;font-size:15px;">(Tap anywhere for more 💖)</p>
       </div>
     </div>
 
